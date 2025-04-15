@@ -1,9 +1,11 @@
 import React from 'react';
-import { Provider } from "./components/ui/provider"
-import ReactDOM from 'react-dom/client';
+
 import './index.css';
 import App from './App';
+import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from "./components/ui/provider"
+import { TypeContextProvider } from './components/context/TypingContext';
 
 
 const root = ReactDOM.createRoot(
@@ -12,7 +14,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider>
-      <App />
+      <TypeContextProvider>
+        <App />
+      </TypeContextProvider>
     </Provider>
   </React.StrictMode>
 );

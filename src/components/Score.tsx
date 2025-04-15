@@ -1,6 +1,5 @@
 import React from 'react';
 import { Stat, Text } from "@chakra-ui/react"
-import Typography from './Typography';
 
 interface Props {
   title: string;
