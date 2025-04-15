@@ -25,7 +25,7 @@ const initialState: State = {
 
 type Action =
   | { type: 'SET_INPUT'; payload: string }
-  | { type: 'INCREMENT_COUNT' }
+  | { type: 'INCREMENT_COUNT'; payload: number }
   | { type: 'FINISH' }
   | { type: 'RESET' }
   | { type: 'SET_STATUSES'; payload: ('none' | 'success' | 'fail' | 'next')[] };
@@ -35,7 +35,7 @@ const reducer = (state: State, action: Action): State => {
     case 'SET_INPUT':
       return { ...state, input: action.payload };
     case 'INCREMENT_COUNT':
-      return { ...state, correctCount: state.correctCount + 1 };
+      return { ...state, correctCount: action.payload };
     case 'FINISH':
       return { ...state, finished: true };
     case 'RESET':

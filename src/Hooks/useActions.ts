@@ -1,5 +1,26 @@
 import { useContext } from "react";
-import {TypeContext} from "../components/context/TypingContext"
+import {TypeContext} from "../components/context/TypingContext";
+
+// const [words, setWords] = useState(typeTest.split(" "));
+//   const [startTime, setStartTime] = useState(new Date());
+
+// const calcWordsPerMinute = (charsTyped: number, millis: number): number =>
+//     Math.floor(charsTyped / 5 / (millis / 60000));
+
+//     const checkFinished = () => {
+//       if (!words.length) {
+//         if (startTime) {
+//           const timeMillis: number = new Date().getTime() - startTime.getTime();
+//           const wpm = calcWordsPerMinute(typeTest.length, timeMillis);
+//           setWordsPerMinute(wpm);
+//         }
+//       }
+//     }
+
+// useEffect(() => {
+//   if (words.length !== 0) return;
+//   checkFinished();
+// }, [words, checkFinished]);
 
 
 export function useActions (){
@@ -10,12 +31,18 @@ export function useActions (){
   }
 
   const { dispatch } = context;
+
   const handleRestart = () =>{
     dispatch({ type: 'RESET' })
-  }
+  };
+
   const handleCancel = () => {
     dispatch({ type: 'RESET' })
-  }
+  };
 
-  return { handleRestart, handleCancel}
+  const handleScore = () =>{}
+
+
+
+  return { handleRestart, handleCancel, handleScore}
 }

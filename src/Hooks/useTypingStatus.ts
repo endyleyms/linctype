@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import {TypeContext} from "../components/context/TypingContext"
 
 export function useTypingStatus (data: string) {
@@ -10,7 +10,7 @@ export function useTypingStatus (data: string) {
 
   const {state,  dispatch } = context;
 
-
+// funcion que detecta la letra que se tipea, agregando diferentes estados
   const onWordChange = (value: string | any[]) => {
     let count = 0;
     dispatch({ type: "SET_INPUT", payload: value.toString() });
@@ -18,7 +18,6 @@ export function useTypingStatus (data: string) {
       if (index < value.length) {
         if (value[index] === letter.toLowerCase()) {
           count++;
-          dispatch({ type: 'INCREMENT_COUNT' })
           return 'success';
         } else {
           return 'fail';
@@ -30,6 +29,7 @@ export function useTypingStatus (data: string) {
       }
     });
 
+    dispatch({ type: 'INCREMENT_COUNT', payload: count })
 
     dispatch({
       type: "SET_STATUSES",
