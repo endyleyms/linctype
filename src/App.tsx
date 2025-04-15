@@ -1,5 +1,11 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
+
 import "./App.css";
+import { Box, Center, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import Score from "./components/Score";
+import InputField from "./components/InputField";
+import LetterDisplay from "./components/LetterDisplay";
+import Typography from "./components/Typography";
 
 const App: React.FC = () => {
   const [typeTest] = useState("This is the sentence to type");
@@ -41,29 +47,35 @@ const App: React.FC = () => {
     }
   };
 
+
+
   return (
-    <div className="App">
-      <h1>
-        {wordsPerMinute
-          ? `You typed ${correctCount} words at ${wordsPerMinute} WPM.`
-          : "Test Your Typing Speed, Scrub!"}
-      </h1>
-      <h3>
-        {wordsPerMinute ? `Refresh to retake the test!` : `Type the following:`}
-      </h3>
-      <h6>
-        {words.map((word, index) =>
-          word === words[0] ? (
-            <em className="current-word" key={index}>
-              {word}{" "}
-            </em>
-          ) : (
-            word + " "
-          )
-        )}
-      </h6>
-      <input name="text" value={enteredText} onChange={onWordChange} />
-    </div>
+    <Center bg="gray.50" p="10">
+      <Box textAlign="center" w="full">
+        <Stack>
+          <Heading as="h1" size="lg">
+            <Text fontWeight="bold" textStyle={"2xl"}>{wordsPerMinute
+              ? `You typed ${correctCount} words at ${wordsPerMinute} WPM.`
+              : "Test Your Typing Speed, Scrub!"}</Text>
+          </Heading>
+
+          <Heading as="h3" size="md">
+            <Text textStyle={"xl"}>Type the following:</Text>
+          </Heading>
+
+          <LetterDisplay />
+
+          <Box>
+            <InputField />
+          </Box>
+
+          <Flex justify="center" gap="6" pt="4">
+            <Score title="You typed" value={correctCount} />
+            <Score title="Words at" value={wordsPerMinute} />
+          </Flex>
+        </Stack>
+      </Box>
+    </Center>
   );
 };
 
