@@ -1,8 +1,11 @@
 import { useContext } from "react";
 import {TypeContext} from "../components/context/TypingContext"
+import { useActions } from "./useActions";
+import { useCalcScore } from "./useCalcScore";
 
 export function useTypingStatus (data: string) {
   const context = useContext(TypeContext);
+  const {  calcWPM, calcAccuracy } = useCalcScore();
 
   if (!context) {
     throw new Error("useTypingStatus must be used within a TypeContextProvider");
@@ -13,7 +16,19 @@ export function useTypingStatus (data: string) {
 // funcion que detecta la letra que se tipea, agregando diferentes estados
   const onWordChange = (value: string | any[]) => {
     let count = 0;
+
+    //Inicio del conteo tiempo
+    if (!state.startTime) {
+      dispatch({ type: 'SET_START_TIME', payload: new Date() });
+    }
+
+    // Detecta si fue un backspace
+    if (value.length < state.input.length) {
+      dispatch({ type: "DELETE_COUNT" });
+    }
+    //Envía el dato del tipeado
     dispatch({ type: "SET_INPUT", payload: value.toString() });
+
     const newStatuses = Array.from(data).map((letter, index) => {
       if (index < value.length) {
         if (value[index] === letter.toLowerCase()) {
@@ -29,15 +44,33 @@ export function useTypingStatus (data: string) {
       }
     });
 
+    //Cuentas las letras que coincidieron
     dispatch({ type: 'INCREMENT_COUNT', payload: count })
 
+    //Actuliza el estado de cada letra
     dispatch({
       type: "SET_STATUSES",
       payload: newStatuses,
     });
 
+    //detecta cuando finaliza le prueba
     if(data.length === value.length){
+
+      const endTime = new Date();
+      const startTime = state.startTime!;
+      const millis = endTime.getTime() - startTime.getTime();
+
+
       dispatch({ type: 'FINISH' });
+      dispatch({ type: 'SET_END_TIME', payload: new Date() });
+      dispatch({ type: "TOTAL_COUNT", payload: value.length });
+
+      const wpm = calcWPM(value.length, millis);
+      const accuracy = calcAccuracy(value.length, state.correctCount);
+      const scoreData = (wpm * value.length * accuracy) - state.deleteCount;
+
+      dispatch({ type: 'SET_WPM', payload: wpm });
+      dispatch({ type: 'SET_SCORE', payload: scoreData });
     }
   };
 
@@ -45,6 +78,8 @@ export function useTypingStatus (data: string) {
     correctCount: state.correctCount,
     statuses: state.statuses,
     onWordChange,
-    finished: state.finished
+    finished: state.finished,
+    score: state.score,
+    wpm: state.wpm
   }
 }

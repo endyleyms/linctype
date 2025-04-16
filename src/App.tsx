@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./App.css";
 import Score from "./components/Score";
@@ -13,16 +13,15 @@ const lorem = "Lorem ipsum dolor sit amet";
 
 const App: React.FC = () => {
   const { handleRestart, handleCancel } = useActions();
-  const { statuses, correctCount, onWordChange, finished } = useTypingStatus(lorem);
-  const [wordsPerMinute, setWordsPerMinute] = useState(0);
+  const { statuses, correctCount, onWordChange, finished, score, wpm } = useTypingStatus(lorem);
 
   return (
     <Center minH="100vh" bg="gray.50" p="10">
       <Box textAlign="center" w="full">
         <Stack>
           <Heading as="h1" size="lg">
-            <Text fontWeight="bold" textStyle={"2xl"}>{wordsPerMinute
-              ? `You typed ${correctCount} words at ${wordsPerMinute} WPM.`
+            <Text fontWeight="bold" textStyle={"2xl"}>{wpm
+              ? `You typed ${correctCount} words at ${wpm} WPM.`
               : "Test Your Typing Speed, Scrub!"}</Text>
           </Heading>
 
@@ -39,7 +38,8 @@ const App: React.FC = () => {
           {finished &&
             <Flex justify="center" gap="6" pt="4">
               <Score title="You typed" value={correctCount} />
-              <Score title="Words at" value={wordsPerMinute} />
+              <Score title="WPM" value={wpm} />
+              <Score title="Score" value={score} />
             </Flex>
           }
           <Center>
