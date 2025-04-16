@@ -60,7 +60,7 @@ const App: React.FC = () => {
                 <>
                   <Center>
                     <Box margin={4} width={'full'}>
-                      <InputField value={state.name} onChange={handleChange} placeholder={'Your Name'} />
+                      <InputField value={state.name} onChange={handleChange} placeholder={'Enter your name'} />
                       <ButtonComponent text="Submit" onClick={useHandleSumbmit} />
                     </Box>
                   </Center>
