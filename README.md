@@ -26,3 +26,6 @@ Runs the JSON Server pseudo-db which can be found in the db.json file. JSON Serv
 
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+
+npx json-server --watch db.json --port 3001

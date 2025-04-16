@@ -12,7 +12,7 @@ export function useActions (){
   }
   
   const { dispatch, state } = context;
-  const { fetchData } = useApi<[]>();
+  const { fetchData, data, loading } = useApi<[]>();
 
   const handleRestart = () =>{
     dispatch({ type: 'RESET' })
@@ -40,18 +40,24 @@ export function useActions (){
     };
 
     try {
-      await fetchData({
+     const scorePost = await fetchData({
         url: "http://localhost:3001/leaderboard",
         method: "POST",
         body: newEntry,
         onError: (err) => alert("Error data creating: " + err.message),
       })
+
+      if(scorePost){
+        await fetchData({
+          url: "http://localhost:3001/leaderboard",
+          method: "GET",
+          onError: (err) => alert("Error fetching data: " + err.message),
+        });
+      }
     } catch (err) {
       console.error("❌ Error en la conexión:", err);
-    } finally {
-      dispatch({ type: 'RESET' })
     }
   }
 
-  return { handleRestart, handleCancel, handleChange, useHandleSumbmit}
+  return { handleRestart, handleCancel, handleChange, useHandleSumbmit, data, loading}
 }

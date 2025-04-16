@@ -9,6 +9,7 @@ import { useTypingStatus } from "./Hooks/useTypingStatus";
 import ButtonComponent from "./components/ButtonComponent";
 import { TypeContext } from "./components/context/TypingContext";
 import { Box, Center, Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import TableScores from "./components/TableScores";
 
 const lorem = "Lorem ipsum dolor sit amet";
 
@@ -19,7 +20,7 @@ const App: React.FC = () => {
   }
 
   const { state } = context;
-  const { handleRestart, handleCancel, handleChange, useHandleSumbmit } = useActions();
+  const { handleRestart, handleCancel, handleChange, useHandleSumbmit, data, loading } = useActions();
   const { statuses, correctCount, onWordChange, finished, score, wpm } = useTypingStatus(lorem);
 
   return (
@@ -49,22 +50,24 @@ const App: React.FC = () => {
               <Score title="Score" value={score} />
             </Flex>
           }
-          <Center>
-            <Flex justify="center" gap="6" pt="4" width={'1/2'}>
-              {finished ?
-                <Stack>
-                  <ButtonComponent text="Cancel" onClick={handleCancel} />
+          <Center flexDirection={'column'}>
+            <Flex justify="center" gap="6" width={'1/2'}>
+              <ButtonComponent text="Cancel" onClick={handleCancel} />
+              <ButtonComponent text="Restart" onClick={handleRestart} />
+            </Flex>
+            <Stack>
+              {finished &&
+                <>
                   <Center>
                     <Box margin={4} width={'full'}>
                       <InputField value={state.name} onChange={handleChange} placeholder={'Your Name'} />
                       <ButtonComponent text="Submit" onClick={useHandleSumbmit} />
                     </Box>
                   </Center>
-                </Stack>
-                :
-                <ButtonComponent text="Restart" onClick={handleRestart} />
+                  <TableScores data={data} loading={loading} />
+                </>
               }
-            </Flex>
+            </Stack>
           </Center>
         </Stack>
       </Box>
