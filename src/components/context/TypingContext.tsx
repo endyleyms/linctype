@@ -10,7 +10,9 @@ interface State {
   finished: boolean;
   statuses: ('none' | 'success' | 'fail' | 'next')[];
   wpm: number,
-  score: number
+  score: number,
+  accuracy: number,
+  name: string
 }
 
 interface TypeContextType {
@@ -32,11 +34,13 @@ const initialState: State = {
   finished: false,
   statuses: [],
   wpm: 0,
-  score: 0
+  score: 0,
+  accuracy: 0,
+  name: ''
 }
 
 type Action =
-  | { type: 'SET_INPUT'; payload: string }
+  | { type: 'SET_INPUT_LETTER'; payload: string }
   | { type: 'SET_START_TIME'; payload: Date }
   | { type: 'SET_END_TIME'; payload: Date }
   | { type: 'INCREMENT_COUNT'; payload: number }
@@ -46,11 +50,13 @@ type Action =
   | { type: 'RESET' }
   | { type: 'SET_STATUSES'; payload: ('none' | 'success' | 'fail' | 'next')[] }
   | { type: 'SET_WPM'; payload: number }
-  | { type: 'SET_SCORE'; payload: number };
+  | { type: 'SET_SCORE'; payload: number }
+  | { type: 'SET_ACCURACY'; payload: number }
+  | { type: 'SET_INPUT'; payload: string };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case 'SET_INPUT':
+    case 'SET_INPUT_LETTER':
       return { ...state, input: action.payload };
     case 'SET_START_TIME':
       return { ...state, startTime: action.payload };
@@ -72,6 +78,10 @@ const reducer = (state: State, action: Action): State => {
       return { ...state, wpm: action.payload };
     case 'SET_SCORE':
       return { ...state, score: action.payload };
+    case 'SET_ACCURACY':
+      return { ...state, accuracy: action.payload };
+    case 'SET_INPUT':
+      return { ...state, name: action.payload };
     default:
       return state;
   }

@@ -4,8 +4,8 @@
       "id": 1,
       "username": "Charity",
       "score": 505.1667,
-      "accuracy": 1.0,
-      "firstStrikeAccuracy": 1.0,
+      "accuracy": 1,
+      "firstStrikeAccuracy": 1,
       "wpm": 121.24,
       "words": 25
     },
@@ -35,6 +35,15 @@
       "firstStrikeAccuracy": 0.88,
       "wpm": 49.77,
       "words": 99
+    },
+    {
+      "username": "wendy",
+      "score": 1075,
+      "accuracy": 0.9615384615384616,
+      "firstStrikeAccuracy": "",
+      "wpm": 43,
+      "words": 26,
+      "id": 5
     }
   ]
 }

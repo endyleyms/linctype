@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import "./App.css";
 import Score from "./components/Score";
@@ -7,12 +7,19 @@ import InputField from "./components/InputField";
 import LetterDisplay from "./components/LetterDisplay";
 import { useTypingStatus } from "./Hooks/useTypingStatus";
 import ButtonComponent from "./components/ButtonComponent";
+import { TypeContext } from "./components/context/TypingContext";
 import { Box, Center, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 
 const lorem = "Lorem ipsum dolor sit amet";
 
 const App: React.FC = () => {
-  const { handleRestart, handleCancel } = useActions();
+  const context = useContext(TypeContext);
+  if (!context) {
+    throw new Error("useTypingStatus must be used within a TypeContextProvider");
+  }
+
+  const { state } = context;
+  const { handleRestart, handleCancel, handleChange, useHandleSumbmit } = useActions();
   const { statuses, correctCount, onWordChange, finished, score, wpm } = useTypingStatus(lorem);
 
   return (
@@ -32,7 +39,7 @@ const App: React.FC = () => {
           <LetterDisplay data={lorem} statuses={statuses} />
           {!finished &&
             <Box margin={4}>
-              <InputField onChange={onWordChange} />
+              <InputField value={state.input} onChange={onWordChange} placeholder={'Typing'} />
             </Box>
           }
           {finished &&
@@ -44,8 +51,19 @@ const App: React.FC = () => {
           }
           <Center>
             <Flex justify="center" gap="6" pt="4" width={'1/2'}>
-              <ButtonComponent text="Restart" onClick={handleRestart} />
-              <ButtonComponent text="Cancel" onClick={handleCancel} />
+              {finished ?
+                <Stack>
+                  <ButtonComponent text="Cancel" onClick={handleCancel} />
+                  <Center>
+                    <Box margin={4} width={'full'}>
+                      <InputField value={state.name} onChange={handleChange} placeholder={'Your Name'} />
+                      <ButtonComponent text="Submit" onClick={useHandleSumbmit} />
+                    </Box>
+                  </Center>
+                </Stack>
+                :
+                <ButtonComponent text="Restart" onClick={handleRestart} />
+              }
             </Flex>
           </Center>
         </Stack>

@@ -1,12 +1,13 @@
-import React from 'react';
 import { Input, Stack } from "@chakra-ui/react"
 
 
-export default function InputField({ onChange }: any) {
+export default function InputField({ value, onChange, placeholder }: any) {
+
   return (
     <Stack gap="4">
       <Input
-        placeholder="Typing"
+        value={value}
+        placeholder={placeholder}
         variant="subtle"
         size="md"
         onChange={e => onChange(e.target.value)}

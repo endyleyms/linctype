@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import {TypeContext} from "../components/context/TypingContext"
-import { useActions } from "./useActions";
 import { useCalcScore } from "./useCalcScore";
 
 export function useTypingStatus (data: string) {
@@ -14,7 +13,7 @@ export function useTypingStatus (data: string) {
   const {state,  dispatch } = context;
 
 // funcion que detecta la letra que se tipea, agregando diferentes estados
-  const onWordChange = (value: string | any[]) => {
+  const onWordChange = (value: string) => {
     let count = 0;
 
     //Inicio del conteo tiempo
@@ -27,7 +26,7 @@ export function useTypingStatus (data: string) {
       dispatch({ type: "DELETE_COUNT" });
     }
     //Envía el dato del tipeado
-    dispatch({ type: "SET_INPUT", payload: value.toString() });
+    dispatch({ type: "SET_INPUT_LETTER", payload: value });
 
     const newStatuses = Array.from(data).map((letter, index) => {
       if (index < value.length) {
@@ -71,6 +70,7 @@ export function useTypingStatus (data: string) {
 
       dispatch({ type: 'SET_WPM', payload: wpm });
       dispatch({ type: 'SET_SCORE', payload: scoreData });
+      dispatch({ type: 'SET_ACCURACY', payload: accuracy });
     }
   };
 
@@ -80,6 +80,7 @@ export function useTypingStatus (data: string) {
     onWordChange,
     finished: state.finished,
     score: state.score,
-    wpm: state.wpm
+    wpm: state.wpm,
+    accuracy: state.accuracy
   }
 }
